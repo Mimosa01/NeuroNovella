@@ -42,3 +42,5 @@ def talk(value: str) -> str:
     messages.append(answer)
 
     return answer.content
+
+
