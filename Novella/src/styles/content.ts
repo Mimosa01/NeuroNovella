@@ -8,6 +8,7 @@ export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 15px;
   height: 500px;
   overflow: auto;
 `
