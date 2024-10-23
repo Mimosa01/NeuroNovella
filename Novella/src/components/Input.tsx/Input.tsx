@@ -4,6 +4,7 @@ import { Button } from "../../styles/button";
 
 type PropsInput = {
   long?: boolean;
+  disabled?: boolean;
   placeholder: string;
   onClick: (value: string) => void;
 }
@@ -19,7 +20,10 @@ export const Input: FC<PropsInput> = (props) => {
         value={value} 
         onChange={e => setValue(e.target.value as string)}
       />
-      <Button onClick={() => props.onClick(value)}>
+      <Button 
+        disabled={props.disabled}
+        onClick={() => props.onClick(value)}
+      >
         Send
       </Button>
     </InputContainer>

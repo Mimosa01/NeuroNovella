@@ -2,7 +2,8 @@ import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyled = createGlobalStyle`
   html {
-	-webkit-box-sizing: border-box;
+    height: 100%;
+	  -webkit-box-sizing: border-box;
 	        box-sizing: border-box;
   }
 
@@ -25,6 +26,11 @@ export const GlobalStyled = createGlobalStyle`
   body {
     padding-top: 34px;
     min-width: 320px;
+    height: 100%;
     font-family: "Muller", sans-serif;
+  }
+
+  #root {
+    height: 100%;
   }
 `

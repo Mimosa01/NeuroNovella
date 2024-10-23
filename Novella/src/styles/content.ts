@@ -9,7 +9,9 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   gap: 10px;
   padding: 15px;
-  height: 500px;
+  min-width: 50%;
+  height: 100%; 
+  border: 1px solid blue; 
   overflow: auto;
 `
 
@@ -18,7 +20,7 @@ export const Message = styled.div<PropsMessage>`
   margin-top: auto;
   padding: 10px;
   width: 70%;
-  border: 2px solid #333;
+  border: 1px solid #333;
 
   & p {
     margin: 0;

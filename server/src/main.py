@@ -1,6 +1,7 @@
+import json
 from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from src.neuro import whoIAm, talk, messages
 from src.schemas import SAnswer
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,32 +27,29 @@ app.add_middleware(
 
 @app.get("/")
 async def index():
-    return {"result": True}
+    return {'result': 'ok'}
 
 
 @app.post("/settings")
 async def start_neuro(user_input: SAnswer):
     whoIAm(user_input.value)
-    answer = talk('Начни писать историю, предоставив мне возможность отвечать за действия главного героя')
 
-    return {'result': answer}
-
-
-@app.post('/talk')
-async def user_answer(user_input: SAnswer):
-    answer = talk(user_input.value)
-
-    return {"result": "ok"}
+    return {'result': 'ok'}
 
 
-@app.get('/messages')
-async def get_all_messages() -> dict[str, Any]:
-    return {"result": "ok"}
-
-
-@app.post('/test')
-async def test(user_input: SAnswer):
-    print(user_input)
-    return {'result': user_input.value}
-
-
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        print(data)
+        answer = talk(data)
+        print(answer)
+        await websocket.send_json({
+                "type": "human",
+                "content": data
+            })
+        await websocket.send_json({
+                "type": "ai",
+                "content": answer.content
+            })

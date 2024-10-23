@@ -1,12 +1,9 @@
 import axios from "axios";
+import { PostDataType } from "../models/apiModels";
 
 const BASE_URL = 'http://127.0.0.1:8000/'
 
-export type PostData = {
-    value: string;
-}
-
-export async function startSettingsHistory(value: PostData): Promise<string> {
+export async function startSettingsHistory(value: PostDataType): Promise<void> {
     return await axios.post(`${BASE_URL}settings`, value, {
         headers: {
             'Content-Type': 'application/json',
@@ -14,7 +11,7 @@ export async function startSettingsHistory(value: PostData): Promise<string> {
     }).then(response => response.data)
 }
 
-export async function talkNeuro(value: PostData): Promise<string> {
+export async function talkNeuro(value: PostDataType): Promise<void> {
     return await axios.post(`${BASE_URL}talk`, value, {
         headers: {
             'Content-Type': 'application/json',
@@ -22,7 +19,7 @@ export async function talkNeuro(value: PostData): Promise<string> {
     }).then(response => response.data)
 }
 
-export async function test(value: PostData): Promise<{result: string}> {
+export async function test(value: PostDataType): Promise<{result: string}> {
     return await axios.post(`${BASE_URL}test`, value, {
         headers: {
             'Content-Type': 'application/json'
@@ -31,7 +28,7 @@ export async function test(value: PostData): Promise<{result: string}> {
 }
 
 export async function allMessages(): Promise<void> {
-    return await axios.post(`${BASE_URL}messages`, {
+    return await axios.get(`${BASE_URL}messages`, {
         headers: {
             'Content-Type': 'application/json'
         }

@@ -1,15 +1,18 @@
 import os
+
 from dotenv import load_dotenv
 from langchain.chains.question_answering.map_reduce_prompt import messages
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage, BaseMessage
 from langchain_community.chat_models.gigachat import GigaChat
 
 load_dotenv()
 
 TOKEN = os.environ.get("TOKEN")
 
-dop_text: str = 'Продолжи историю, добавив негативные или положительные последствия и предоставь мне возможность отвечать за действия главного героя'
+dop_text: str = 'Продолжи историю пятью предложениями, добавив негативные или положительные последствия и предоставь мне возможность отвечать за действия главного героя'
+
 messages = []
+
 llm = GigaChat(
     credentials=TOKEN,
     scope="GIGACHAT_API_PERS",
@@ -20,7 +23,7 @@ llm = GigaChat(
 )
 
 
-def whoIAm(value: str) -> str:
+def whoIAm(value: str) -> None:
     text = f'Ты сценарист визуальной новеллы. Параметры истории: {value}. Твоя задача писать историю на основе ответа пользователя.'
     messages.append(
         SystemMessage(
@@ -28,19 +31,13 @@ def whoIAm(value: str) -> str:
         )
     )
 
+
+def talk(value: str) -> BaseMessage:
+    user_message = HumanMessage(content=f'{value}. {dop_text}')
     messages.append(
-        HumanMessage(content='Начни писать историю, предоставив мне возможность отвечать за действия главного героя.'))
+        user_message
+    )
     answer = llm.invoke(messages)
     messages.append(answer)
 
-    return answer.content
-
-
-def talk(value: str) -> str:
-    messages.append(HumanMessage(content=f'{value}. {dop_text}'))
-    answer = llm.invoke(messages)
-    messages.append(answer)
-
-    return answer.content
-
-
+    return answer
